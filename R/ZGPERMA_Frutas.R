@@ -57,17 +57,36 @@ f_Frutas<-function(directorio,mes,anio){
 
 
   # Consumo interno ---------------------------------------------------------
-archivo=nombre_archivos[nombre_archivos$PRODUCTO=="SIPSA","NOMBRE"]
-  Frutas <- read_excel(paste0(directorio,"/ISE/",anio,"/",carpeta,"/Data/Datos_SIPSA/",archivo))
+archivo=nombre_archivos[nombre_archivos$PRODUCTO=="Clasificacion","NOMBRE"]
+   clasificacion=read_excel(paste0(directorio,"/ISE/",anio,"/",carpeta,"/Data/consolidado_ISE/Frutas/",archivo))
+   vector_otras=clasificacion$`Otras frutas`
+   vector_citricas=clasificacion$`Frutas citricas`
+   archivo=nombre_archivos[nombre_archivos$PRODUCTO=="Microdato","NOMBRE"] 
+  Frutas <- read.xlsx(paste0(directorio,"/ISE/",anio,"/",carpeta,"/Data/Datos_SIPSA/Microdatos desde 2013/",archivo),sheet = "2.1",startRow = 6)
 
-  columna_fila=which(grepl("Frutas citricas con exclusion plazas",Banano),arr.ind = TRUE)
-  columna1=which(grepl("Frutas citricas retropolado",Frutas),arr.ind = TRUE)
-  columna2=which(grepl("Otras frutas retropolado",Frutas),arr.ind = TRUE)
-  fila1=min(which(Banano[,columna_fila[1]-3]==2013,arr.ind = TRUE)[,"row"])
-  fila2=min(which(Banano[,columna_fila[1]-3]==anio,arr.ind = TRUE)[,"row"])
+  
+  Frutas[,"Fecha"] <- as.Date(Frutas[,"Fecha"], origin = "1899-12-30")
+  Frutas$Cant.Kg=as.numeric(Frutas$Cant.Kg)
+  otras_frutas= Frutas %>%
+    mutate(año = year(Fecha), mes = month(Fecha)) %>%
+    filter(Alimento %in% vector_otras,Departamento.Proc.!="OTRO") %>% 
+    group_by(año, mes) %>% 
+    mutate(cantidad=sum(Cant.Kg)) %>% 
+    select(año,mes,cantidad) %>% 
+    unique()
+valor_otras=otras_frutas[otras_frutas$año==anio & otras_frutas$mes==mes,"cantidad"]
 
+citricas= Frutas %>%
+  mutate(año = year(Fecha), mes = month(Fecha)) %>%
+  filter(Alimento %in% vector_citricas,Departamento.Proc.!="OTRO") %>% 
+  group_by(año, mes) %>% 
+  mutate(cantidad=sum(Cant.Kg)) %>% 
+  select(año,mes,cantidad) %>% 
+  unique()
+valor_citricas=citricas[citricas$año==anio & citricas$mes==mes,"cantidad"]
+    
 
-  Valor_Frutas=as.data.frame(na.omit(Frutas[fila1:(fila2+mes-1),c(columna1[1],columna2[1])]))
+  Valor_Frutas=as.numeric(c(valor_otras,valor_citricas))
 
 
 

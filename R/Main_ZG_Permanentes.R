@@ -419,7 +419,7 @@ Mes=mes
   # Escribe los datos en la hoja "Frutas Total(Expos+Interno)"
 writeData(wb, sheet = "Frutas Citricas", x = nuevos_datos,colNames = FALSE,startCol = "A", startRow = (ultima_fila[1]+3))
 writeData(wb, sheet = "Frutas Citricas", x = exportaciones[,1],colNames = FALSE,startCol = "D", startRow = (fila_anio_ant[1]+2))
-writeData(wb, sheet = "Frutas Citricas", x =as.numeric(consumo_interno[,1]),colNames = FALSE,startCol = "E", startRow = (fila[1]+2))
+writeData(wb, sheet = "Frutas Citricas", x =as.numeric(consumo_interno[2]),colNames = FALSE,startCol = "E", startRow = (ultima_fila[1]+3))
 writeData(wb, sheet = "Frutas Citricas", x = exportaciones[,3],colNames = FALSE,startCol = "J", startRow = (fila_anio_ant[1]+2))
 writeFormula(wb, sheet ="Frutas Citricas" , x = paste0("D",ultima_fila+3,"/D",fila_anterior+2,"*100-100") ,startCol = "G", startRow = (ultima_fila[1]+3))
 writeFormula(wb, sheet ="Frutas Citricas" , x = paste0("E",ultima_fila+3,"/E",fila_anterior+2,"*100-100") ,startCol = "H", startRow = (ultima_fila[1]+3))
@@ -507,7 +507,7 @@ writeFormula(wb, sheet ="Áreas en desarrollo" , x = paste0("'Frutas Citricas'!A
   # Escribe los datos en la hoja "Frutas Total(Expos+Interno)"
   writeData(wb, sheet = "Otras frutas.", x = nuevos_datos,colNames = FALSE,startCol = "A", startRow = (ultima_fila[1]+3))
   writeData(wb, sheet = "Otras frutas.", x = exportaciones[,2],colNames = FALSE,startCol = "D", startRow = (fila_anio_ant[1]+2))
-  writeData(wb, sheet = "Otras frutas.", x =as.numeric(consumo_interno[,2]),colNames = FALSE,startCol = "E", startRow = (fila[1]+2))
+  writeData(wb, sheet = "Otras frutas.", x =as.numeric(consumo_interno[1]),colNames = FALSE,startCol = "E", startRow = (ultima_fila[1]+3))
   writeData(wb, sheet = "Otras frutas.", x = exportaciones[,4],colNames = FALSE,startCol = "J", startRow = (fila_anio_ant[1]+2))
   writeFormula(wb, sheet ="Otras frutas." , x = paste0("D",ultima_fila+3,"/D",fila_anterior+2,"*100-100") ,startCol = "G", startRow = (ultima_fila[1]+3))
   writeFormula(wb, sheet ="Otras frutas." , x = paste0("E",ultima_fila+3,"/E",fila_anterior+2,"*100-100") ,startCol = "H", startRow = (ultima_fila[1]+3))
